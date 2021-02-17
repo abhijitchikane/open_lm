@@ -1,0 +1,67 @@
+<div class="container mt-5">
+    <h2>Books</h2>
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" class="me-2" formControlName="title" placeholder="Title">
+                    <input type="text" class="me-2" formControlName="author" placeholder="Author">
+                    <input type="text" class="me-2" formControlName="price" placeholder="Price">
+                    <button class="btn ms-5 btn-primary" [disabled]="bookForm.invalid">Submit</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="updatedBookForm">
+        <div class="row">
+            <div class="col-md-10">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let book of books; let index=index;">
+                            <th>
+                                <ng-container *ngIf="editIndex!=index; else inputTitle;"> {{book.title}} </ng-container>
+                                <ng-template #inputTitle>
+                                    <input type="text" class="me-2" formControlName="updatedTitle" placeholder="Title">
+                                </ng-template>
+                            </th>
+                            <td>
+                                <ng-container *ngIf="editIndex!=index; else inputAuthor;"> {{book.author}}
+                                </ng-container>
+                                <ng-template #inputAuthor>
+                                    <input type="text" class="me-2" formControlName="updatedAuthor"
+                                        placeholder="Author">
+                                </ng-template>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="editIndex!=index; else inputPrice;"> {{book.price}} </ng-container>
+                                <ng-template #inputPrice>
+                                    <input type="text" class="me-2" formControlName="updatedPrice" placeholder="Price">
+                                </ng-template>
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-warning me-2"
+                                    (click)="onEdit(index, book)">{{editIndex!=index
+                                    ? 'Edit' :
+                                    'Cancel'}}</button>
+                                <button class="btn btn-sm btn-primary me-2" (click)="onUpdate()"
+                                    *ngIf="editIndex==index" [disabled]="updatedBookForm.invalid">Update</button>
+                                <button class="btn btn-sm btn-secondary me-2" routerLink="{{index}}"
+                                    [queryParams]="book" *ngIf="editIndex!=index" (click)="true">View</button>
+                                <button class="btn btn-sm btn-danger" (click)="onDelete(index)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+
+</div>
